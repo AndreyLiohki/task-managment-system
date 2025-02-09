@@ -17,7 +17,6 @@ public class JwtService {
 
     public String generateJwtsToken(String username, Role role){
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role);
         return Jwts
                 .builder()
                 .claims(claims)
@@ -42,15 +41,9 @@ public class JwtService {
         return extractClaims(token).getSubject();
     }
 
-    public String extractRole(String token){
-        Claims claim = extractClaims(token);
-        return claim.get("role", String.class);
-    }
-
-    public boolean isValidToken(String token, String username, String role){
+    public boolean isValidToken(String token, String username){
         final String extractedUsername = extractUsername(token);
-        final String extractedRole = extractRole(token);
-        return(extractedUsername.equals(username) && isTokenExpires(token) && extractedRole.equals(role));
+        return(extractedUsername.equals(username) && isTokenExpires(token));
     }
 
     private boolean isTokenExpires(String token){
