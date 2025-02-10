@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.dto.UserHomePageDto;
 import org.example.entity.AppUser;
 import org.example.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,19 @@ public class UserService {
 
     public Optional<AppUser> findByUserId(Long userId){
         return userRepository.findById(userId);
+    }
+
+    public UserHomePageDto loadHomePage(String username){
+        AppUser appUser = findByUsername(username);
+        UserHomePageDto homePageDto = new UserHomePageDto();
+
+        homePageDto.setUserId(appUser.getUserId());
+        homePageDto.setFirstname(appUser.getFirstname());
+        homePageDto.setLastname(appUser.getLastname());
+        homePageDto.setUsername(appUser.getUsername());
+        homePageDto.setBirthday(appUser.getBirthdate());
+        homePageDto.setEmail(appUser.getEmail());
+
+        return homePageDto;
     }
 }
