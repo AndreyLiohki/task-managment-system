@@ -15,14 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthenticationService authService;
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
-
 
     public AuthController(AuthenticationService authService, UserService userService, PasswordEncoder passwordEncoder) {
         this.authService = authService;
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/signup")

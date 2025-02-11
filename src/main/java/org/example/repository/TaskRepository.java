@@ -1,4 +1,7 @@
 package org.example.repository;
 
-public class TaskRepository {
+import org.example.entity.Task;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TaskRepository extends JpaRepository<Task, Long> {
 }

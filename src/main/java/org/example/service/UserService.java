@@ -1,8 +1,10 @@
 package org.example.service;
 
+import org.example.dto.UserEditionDto;
 import org.example.dto.UserHomePageDto;
 import org.example.entity.AppUser;
 import org.example.repository.UserRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,7 +23,7 @@ public class UserService {
     }
 
     public AppUser findByUsername(String username){
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
 
     public Optional<AppUser> findByUserId(Long userId){
@@ -40,5 +42,22 @@ public class UserService {
         homePageDto.setEmail(appUser.getEmail());
 
         return homePageDto;
+    }
+
+    public boolean updateUser(String username, UserEditionDto userEditionDto){
+        AppUser existingAppUser = userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
+        if(!existingAppUser.getUsername().equals(userEditionDto.getUsername())){
+            if(userRepository.findByUsername(userEditionDto.getUsername()).isPresent()){
+                return false;
+            }
+            existingAppUser.setUsername(userEditionDto.getUsername());
+        }
+            existingAppUser.setLastname(userEditionDto.getLastname());
+            existingAppUser.setFirstname(userEditionDto.getFirstname());
+            existingAppUser.setBirthdate(userEditionDto.getBirthday());
+            existingAppUser.setEmail(userEditionDto.getEmaill());
+            userRepository.save(existingAppUser);
+            return true;
+
     }
 }

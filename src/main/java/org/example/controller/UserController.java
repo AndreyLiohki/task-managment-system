@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import org.example.dto.CreatedProjectSummaryDto;
+import org.example.dto.UserEditionDto;
 import org.example.entity.AppUser;
 import org.example.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -8,8 +10,7 @@ import org.example.service.CommentService;
 import org.example.service.ProjectService;
 import org.example.service.TaskService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
@@ -26,9 +27,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/user/homepage")
+    @GetMapping("/user/homepage")
     public ResponseEntity<UserHomePageDto> loadHomePage(Authentication authentication){
         final String username = authentication.getName();
         return ResponseEntity.ok(userService.loadHomePage(username));
+    }
+
+    @PutMapping("/user/edit")
+    public ResponseEntity<String> editProfile(@RequestBody UserEditionDto userEditionDto, Authentication authentication){
+        final String username = authentication.getName();
     }
 }
